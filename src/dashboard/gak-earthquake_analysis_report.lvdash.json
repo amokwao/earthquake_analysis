@@ -1,0 +1,376 @@
+{
+  "datasets": [
+    {
+      "name": "0e93ebc6",
+      "displayName": "seismic_activity",
+      "queryLines": [
+        "SELECT * FROM lakehouse.`04_gold`.seismic_activity"
+      ]
+    },
+    {
+      "name": "4123af53",
+      "displayName": "event_density_hotspot",
+      "queryLines": [
+        "SELECT * FROM lakehouse.`04_gold`.event_density"
+      ],
+      "catalog": "lakehouse",
+      "schema": "04_gold"
+    },
+    {
+      "name": "206cf4ad",
+      "displayName": "silver-earthquake-events",
+      "queryLines": [
+        "SELECT * FROM lakehouse.`03_silver`.earthquake_events"
+      ],
+      "catalog": "lakehouse",
+      "schema": "03_silver"
+    }
+  ],
+  "pages": [
+    {
+      "name": "15f76ff5",
+      "displayName": "earthquake_analysis_report",
+      "layout": [
+        {
+          "widget": {
+            "name": "2dc745aa",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "206cf4ad",
+                  "fields": [
+                    {
+                      "name": "daily(time)",
+                      "expression": "DATE_TRUNC(\"DAY\", `time`)"
+                    },
+                    {
+                      "name": "count(id)",
+                      "expression": "COUNT(`id`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "daily(time)",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "count(id)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 9
+          }
+        },
+        {
+          "widget": {
+            "name": "237a67c1",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "4123af53",
+                  "fields": [
+                    {
+                      "name": "avg_lat",
+                      "expression": "`avg_lat`"
+                    },
+                    {
+                      "name": "avg_long",
+                      "expression": "`avg_long`"
+                    },
+                    {
+                      "name": "max_mag",
+                      "expression": "`max_mag`"
+                    },
+                    {
+                      "name": "avg_mag",
+                      "expression": "`avg_mag`"
+                    },
+                    {
+                      "name": "event_density",
+                      "expression": "`event_density`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              },
+              "widgetType": "symbol-map",
+              "encodings": {
+                "coordinates": {
+                  "latitude": {
+                    "fieldName": "avg_lat"
+                  },
+                  "longitude": {
+                    "fieldName": "avg_long"
+                  }
+                },
+                "size": {
+                  "fieldName": "event_density",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "extra": [
+                  {
+                    "fieldName": "avg_lat"
+                  },
+                  {
+                    "fieldName": "avg_long"
+                  },
+                  {
+                    "fieldName": "max_mag"
+                  },
+                  {
+                    "fieldName": "avg_mag"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 12,
+            "height": 9
+          }
+        },
+        {
+          "widget": {
+            "name": "0a95346b",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "0e93ebc6",
+                  "fields": [
+                    {
+                      "name": "count(*)",
+                      "expression": "COUNT(`*`)"
+                    },
+                    {
+                      "name": "net",
+                      "expression": "`net`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "count(*)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "net",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 18,
+            "width": 12,
+            "height": 10
+          }
+        },
+        {
+          "widget": {
+            "name": "ab72b2e0",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "206cf4ad",
+                  "fields": [
+                    {
+                      "name": "latitude",
+                      "expression": "`latitude`"
+                    },
+                    {
+                      "name": "longitude",
+                      "expression": "`longitude`"
+                    },
+                    {
+                      "name": "place",
+                      "expression": "`place`"
+                    },
+                    {
+                      "name": "time",
+                      "expression": "`time`"
+                    },
+                    {
+                      "name": "mag",
+                      "expression": "`mag`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "mark": {
+                "size": -1.7,
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              },
+              "widgetType": "symbol-map",
+              "encodings": {
+                "coordinates": {
+                  "latitude": {
+                    "fieldName": "latitude"
+                  },
+                  "longitude": {
+                    "fieldName": "longitude"
+                  }
+                },
+                "size": {
+                  "fieldName": "mag",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "extra": [
+                  {
+                    "fieldName": "place"
+                  },
+                  {
+                    "fieldName": "time"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 28,
+            "width": 12,
+            "height": 11
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
